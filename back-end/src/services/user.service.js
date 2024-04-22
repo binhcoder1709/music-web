@@ -45,4 +45,14 @@ const findById = async (id) => {
   }
 };
 
-export { findAll, createOne, findByEmail, findById };
+const update = async (id, dataUpdate) => {
+  try {
+    const result = await User.findByIdAndUpdate(id, dataUpdate, { new: true });
+    return result;
+  } catch (error) {
+    console.error("Error", error);
+    throw error;
+  }
+};
+
+export { findAll, createOne, findByEmail, findById, update };

@@ -1,3 +1,5 @@
+import { findById } from "../services/music.service.js";
+
 // validation music data
 const validationMusic = async (req, res, next) => {
   const data = req.body;
@@ -12,4 +14,14 @@ const validationMusic = async (req, res, next) => {
   next();
 };
 
-export { validationMusic };
+// check exist data by id
+const checkIdExist = async (req, res, next) => {
+  const id = req.params.id;
+  const checkExist = await findById(id);
+  if (!checkExist) {
+    return res.status(404).json({ error: "Not Found Data By This Id" });
+  }
+  next();
+};
+
+export { validationMusic, checkIdExist };

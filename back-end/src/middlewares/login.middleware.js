@@ -23,14 +23,6 @@ const decryptionPassword = async (req, res, next) => {
         return res.status(500).json({ error: err.message });
       }
       if (result) {
-        const userChecked = {
-          id: userAuth._id,
-          userName: userAuth.userName,
-          email: userAuth.email,
-          role: userAuth.role,
-          avatar: userAuth.avatar
-        };
-        req.userChecked = userChecked;
         next();
       } else {
         return res.status(401).json({ error: "Invalid password" });
@@ -41,13 +33,32 @@ const decryptionPassword = async (req, res, next) => {
   });
 };
 
+// check if user blocked
+const checkBlockUser = async (req, res, next) => {
+  const userAuth = req.userAuth;
+  if (userAuth.status == 0) {
+    return res.status(403).json({ error: "Account Blocked" });
+  } else if (userAuth.status == 1) {
+    const userChecked = {
+      id: userAuth._id,
+      userName: userAuth.userName,
+      email: userAuth.email,
+      role: userAuth.role,
+      avatar: userAuth.avatar,
+    };
+    req.userChecked = userChecked;
+    next();
+  }
+};
+
 // access token
 const accessToken = async (req, res, next) => {
   const userChecked = req.userChecked;
   const token = jwt.sign(userChecked, process.env.TOKEN_SECRET, {
     expiresIn: "30m",
   });
-  return res.status(200).json(token);
+  req.token = token;
+  next();
 };
 
-export { checkExistUser, decryptionPassword, accessToken };
+export { checkExistUser, decryptionPassword, accessToken, checkBlockUser };

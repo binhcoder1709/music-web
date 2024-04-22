@@ -7,8 +7,8 @@ const userSchema = new mongoose.Schema({
   avatar: {type: String},
   password: { type: String },
   role: { type: String },
-  status: { type: String },
-  createAt: { type: String },
+  status: { type: Number },
+  createdAt: { type: String },
 });
 const User = mongoose.model("users", userSchema);
 

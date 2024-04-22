@@ -3,7 +3,12 @@ import {
   checkExistUser,
   decryptionPassword,
 } from "../middlewares/login.middleware.js";
-import { createOne, findAll, findById } from "../services/user.service.js";
+import {
+  createOne,
+  findAll,
+  findById,
+  update,
+} from "../services/user.service.js";
 
 // get data
 const getUsers = async (req, res) => {
@@ -37,15 +42,24 @@ const createUser = async (req, res) => {
 
 // login user account
 const loginUser = async (req, res) => {
+  const token = req.token;
   try {
-    await checkExistUser(req, res, async () => {
-      await decryptionPassword(req, res, async () => {
-        await accessToken(req, res);
-      });
-    });
+    res.status(200).json(token);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-export { getUsers, getUserById, createUser, loginUser };
+// update data
+const updateData = async (req, res) => {
+  const id = req.params.id;
+  const dataUpdate = req.body;
+  try {
+    await update(id, dataUpdate);
+    res.status(200).json({ error: "Data Update Successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export { getUsers, getUserById, createUser, loginUser, updateData };

@@ -1,4 +1,4 @@
-import { findAll, findById } from "../services/user.service.js";
+import { findById } from "../services/user.service.js";
 
 // check empty data
 const checkEmptyUser = async (req, res, next) => {

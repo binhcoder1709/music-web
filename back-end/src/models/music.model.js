@@ -5,7 +5,8 @@ const musicSchema = new mongoose.Schema({
   author: { type: String },
   musicSource: { type: String },
   musicImage: { type: String },
-  type: {type: String},
+  type: { type: Array },
+  likeTrack: { type: Array },
   createdAt: { type: String },
 });
 

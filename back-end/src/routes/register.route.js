@@ -16,4 +16,6 @@ registerRoute.post(
   createUser
 );
 
+registerRoute.post("/popup", checkExistUser, createUser);
+
 export default registerRoute;
